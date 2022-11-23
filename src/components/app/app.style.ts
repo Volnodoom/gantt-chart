@@ -1,11 +1,13 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { ThemeParameters } from "types/global.type";
+import { ThemeParameters } from "types/style.type";
 import ArrowDown from "assets/img/arrow_download_regular.svg";
 import RobotoRegularWoff from 'assets/fonts/roboto_regular.woff'
 import RobotoRegularWoff2 from 'assets/fonts/roboto_regular.woff2'
 import RobotoMediumWoff from 'assets/fonts/roboto_medium.woff'
 import RobotoMediumWoff2 from 'assets/fonts/roboto_medium.woff2'
-import { setDimensions, setFontValues } from "utils/mixins";
+import RobotoThinItalicWoff from 'assets/fonts/roboto_thin_italic.woff'
+import RobotoThinItalicWoff2 from 'assets/fonts/roboto_thin_italic.woff2'
+import { setDimensions } from "utils/mixins";
 
 const GlobalStyle = createGlobalStyle<ThemeParameters>`
 @font-face {
@@ -24,6 +26,15 @@ const GlobalStyle = createGlobalStyle<ThemeParameters>`
   src:  local('Roboto'),
         url(${RobotoMediumWoff2}) format('woff2'),
         url(${RobotoMediumWoff}) format('woff');
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 100;
+  src:  local('Roboto'),
+        url(${RobotoThinItalicWoff2}) format('woff2'),
+        url(${RobotoThinItalicWoff}) format('woff');
 }
 
 *,
@@ -141,6 +152,7 @@ button,
 `;
 
 const Calendar = styled.main`
+  position: relative;
   ${setDimensions(1440, 800)};
   margin: 30px;
 
@@ -148,28 +160,17 @@ const Calendar = styled.main`
   box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
 `;
 
-const CalendarHead = styled.div`
-  padding: 16px 27px 12px 24px;
-  display: flex;
-  justify-content: space-between;
-`;
-
-const CalendarTitle = styled.h1`
-  display: block;
-  margin: 6px auto 0 0;
-  padding: 0;
-
-  ${({ theme }) => setFontValues(theme.font.huge, 28)};
-  color: ${({ theme }) => theme.color.lightSecondary};
-`;
-
 const CalendarButton = styled.button`
+  position: absolute;
+  top: 16px;
+  right: 27px;
   padding: 11px 16px 11px 44px;
-  position: relative;
 
   border: ${({ theme }) => `1px solid ${theme.color.lightOutlineTwo}`};
   background-color: ${({ theme }) => theme.color.white};
   border-radius: 10px;
+
+  cursor: pointer;
 
   &:hover {
     background-color: ${({ theme }) => theme.color.lightOutlineTwo};
@@ -190,7 +191,5 @@ const CalendarButton = styled.button`
 export {
   GlobalStyle,
   Calendar,
-  CalendarHead,
-  CalendarTitle,
   CalendarButton,
 };

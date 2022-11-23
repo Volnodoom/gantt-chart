@@ -1,4 +1,4 @@
-import { DefaultParamsForTheme } from "types/global.type";
+import { DefaultParamsForTheme } from "types/style.type";
 
 export const defaultTheme: DefaultParamsForTheme = {
   font: {

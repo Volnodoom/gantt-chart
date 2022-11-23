@@ -1,20 +1,55 @@
+import { css, FlattenSimpleInterpolation } from "styled-components";
 import { TypeOfData } from "./const";
 
-export const setDimensions = (width: number, height?: number) => {
+export const setDimensions = (width: number | string, height?: number | string) => {
   if(height) {
     return {
-      width: `${width}px`,
-      height: `${height}px`,
+      width,
+      height,
     }
   }
 
   return {
-    width: `${width}px`,
-    height: `${width}px`,
+    width: width,
+    height: width,
   }
 };
 
-export const setFontValues = (size: number | string, height: number | string) => ({
-  'font-size': typeof size === TypeOfData.STRING ? size : `${size}px`,
-  'line-height': typeof height === TypeOfData.STRING ? height : `${height}px`,
-});
+export const setFontValues = (size: number | string, height: number | string, weight?: number) => {
+  let withWeight: FlattenSimpleInterpolation | undefined;
+
+  if(typeof size === TypeOfData.STRING) {
+    withWeight = css `
+      font-size: ${size};
+      font-weight: ${weight};
+      line-height: ${height}px;
+    `;
+  }
+
+  if(typeof height === TypeOfData.STRING) {
+    withWeight = css `
+    font-size: ${size}px;
+    font-weight: ${weight};
+    line-height: ${height};
+  `;
+  }
+
+  if(typeof size === TypeOfData.STRING && typeof height === TypeOfData.STRING) {
+    withWeight = css `
+      font-size: ${size};
+      font-weight: ${weight};
+      line-height: ${height};
+    `;
+  }
+
+  if (weight) {
+    return withWeight;
+  }
+
+  return {
+    'font-size': size,
+    'line-height': height,
+  }
+};
+
+
