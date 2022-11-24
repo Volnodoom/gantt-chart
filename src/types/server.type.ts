@@ -1,6 +1,7 @@
 import { store } from "store";
 import { AxiosInstance } from 'axios';
 import { LoadingStatus } from "utils/server.const";
+import { CalendarLevels } from "utils/const";
 
 
 export type ServerDataType = {
@@ -43,6 +44,7 @@ export type CalendarDataType = {
   period: string | null,
   calendarEvent: ClientProjectCalendarType[],
   activeCalendarId: number | null,
+  levelFold: CalendarLevels | null,
   calendarStatus: LoadingStatus,
 };
 

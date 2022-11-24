@@ -1,28 +1,22 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { ClientProjectCalendarType } from "types/server.type";
-import { STEP } from "utils/const";
-import { arrayFromStep, calculateEventLength, findCurrentEventSubLevelIds, makeOneDayStepNumber } from "utils/utils";
+import { ONE_DAY, STEP } from "utils/const";
+import { arrayFromStep, calculateEventLength, makeOneDayStepNumber } from "utils/utils";
 import * as S from "./row_level.style";
+import RowLevelHead from "./row_level_head";
 
 type RowLevelType = {
   calendarEvent: ClientProjectCalendarType,
   calendarStart: Date,
+  noButton?: boolean,
 }
 
-const RowLevel = ({calendarEvent, calendarStart}: RowLevelType) => {
+const RowLevel = ({calendarEvent, calendarStart, noButton}: RowLevelType) => {
   const repeat = useRef<boolean[]>([]);
-
-  const subIds = findCurrentEventSubLevelIds(calendarEvent);
-  const taskCounter = subIds && (subIds as number[]).length > 0 ? subIds.length : 0;
 
   return(
     <>
-      <S.TableData>
-        <S.TableDataButton fold />
-        <S.TableDataTaskCounter>{taskCounter}</S.TableDataTaskCounter>
-        {calendarEvent.title}
-      </S.TableData>
-
+      <RowLevelHead noButton={noButton} calendarEvent={calendarEvent}/>
       {
         arrayFromStep
         .map((currentStep:number, index: number) =>
@@ -36,6 +30,20 @@ const RowLevel = ({calendarEvent, calendarStart}: RowLevelType) => {
 
             const isFrameBooked = (currentDay >= start) && (currentDay <= end);
             const isNoRepeatBook = repeat.current.length === 0;
+
+            if(isCurrentDayEqualStart && isCurrentDayEqualEnd && isNoRepeatBook) {
+
+              repeat.current.push(true);
+              return (
+                <S.TableData
+                  $activeFrame={calendarEvent.title}
+                  colSpan={ONE_DAY}
+                  key={calendarEvent.periodStart}
+                >
+                  <div></div>
+                </S.TableData>
+              )
+            }
 
             if(isCurrentDayEqualStart && isNoRepeatBook) {
               return (
@@ -66,4 +74,4 @@ const RowLevel = ({calendarEvent, calendarStart}: RowLevelType) => {
   )
 }
 
-export default RowLevel;
+export default memo(RowLevel);

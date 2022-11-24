@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CalendarDataType, ClientProjectCalendarType, ProjectType } from "types/server.type";
+import { CalendarLevels } from 'utils/const';
 import { LoadingStatus, NameSpace } from 'utils/server.const';
 import { fetchCalendarData } from './api_actions';
 
@@ -8,6 +9,7 @@ const initialState: CalendarDataType = {
   period: null,
   calendarEvent: [],
   activeCalendarId: null,
+  levelFold: null,
   calendarStatus: LoadingStatus.Idle,
 }
 
@@ -34,6 +36,9 @@ export const calendarData = createSlice({
     },
     setActiveCalendarId: (state, action: PayloadAction<number | null>) => {
       state.activeCalendarId = action.payload;
+    },
+    setFoldedLevel: (state, action: PayloadAction<CalendarLevels | null>) => {
+      state.levelFold = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -54,4 +59,5 @@ export const {
   setProject,
   setCalendarEvent,
   setActiveCalendarId,
+  setFoldedLevel,
 } = calendarData.actions;

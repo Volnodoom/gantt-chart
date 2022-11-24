@@ -7,6 +7,7 @@ import { makeSpecificFiltration } from 'utils/utils';
 export const getProjectName = (state: RootState) => state[NameSpace.CALENDAR_DATA].project;
 export const getWholePeriod = (state: RootState) => state[NameSpace.CALENDAR_DATA].period;
 export const getCalendarStatus = (state: RootState) => state[NameSpace.CALENDAR_DATA].calendarStatus;
+export const getFoldedLevel = (state: RootState) => state[NameSpace.CALENDAR_DATA].levelFold;
 
 export const getAllCalendarEvents = (state: RootState): ClientProjectCalendarType[] => state[NameSpace.CALENDAR_DATA].calendarEvent;
 

@@ -10,7 +10,6 @@ const TableData = styled.td<TableDataType>`
 
   div {
     position: relative;
-    top: 50%;
     ${setDimensions('100%', 24)};
 
     background-color: var(--timeFrameColor);
@@ -45,8 +44,9 @@ const TableData = styled.td<TableDataType>`
         left: calc(100% + 8px);
         transform: translateY(-50%);
 
-        ${setDimensions('100%', 18)}
+        ${setDimensions(350, 18)}
         content: '${$activeFrame}';
+        overflow: visible;
       }
       `
     :

@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { arrayFromStep } from "utils/utils";
 import * as Style from "./empty_row.style";
 import * as S from "./row_level.style";
@@ -35,4 +36,4 @@ const EmptyRow = ({isLastRow}: EmptyRowType) => {
   )
 }
 
-export default EmptyRow;
+export default memo(EmptyRow);

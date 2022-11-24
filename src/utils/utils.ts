@@ -1,5 +1,5 @@
 import { ClientProjectCalendarType, ServerProjectCalendarType } from "types/server.type";
-import { CalendarLevels, DATE_OPTIONS, LOCAL, ONE_DAY, ONE_DAY_IN_MILLISECONDS, SIX_DAY_IN_MILLISECONDS, START, STEP, WEEK_IN_MILLISECONDS } from "./const";
+import { CalendarLevels, DATE_OPTIONS, LEVEL_WORD, LOCAL, ONE_DAY, ONE_DAY_IN_MILLISECONDS, REGULAR_PATTERN, SIX_DAY_IN_MILLISECONDS, START, STEP, WEEK_IN_MILLISECONDS } from "./const";
 
 const getTopAndSubData = (serverData: ServerProjectCalendarType[], result: ClientProjectCalendarType[] = []) => {
   let currentLevel = START;
@@ -92,3 +92,15 @@ export const makeSpecificFiltration = (calendarEvents: ClientProjectCalendarType
 
   return result;
 };
+
+export const getCalendarCurrentLevel = (calendarEvent: ClientProjectCalendarType) => {
+  const keys = Object.keys(calendarEvent);
+  const resultArray = keys
+    .find((key) => key.includes(LEVEL_WORD))?.match(REGULAR_PATTERN);
+
+  if(!resultArray) {
+    return null;
+  }
+
+  return resultArray[0] as CalendarLevels;
+}

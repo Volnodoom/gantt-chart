@@ -1,10 +1,15 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import RowLvlOne from "assets/img/row_lvl_one.svg";
 import RowLvlTwo from "assets/img/row_lvl_two.svg";
 import RowLvlThree from "assets/img/row_lvl_three.svg";
 import RowLvlFour from "assets/img/row_lvl_four.svg";
 import RowLvlFive from "assets/img/row_lvl_five.svg";
 import { setDimensions } from "utils/mixins";
+import { LevelRowType } from "types/style.type";
+
+const displayRaw = css<LevelRowType>`
+  display: ${({ $isContentHidden }) => $isContentHidden ? `none` : 'table-row'};
+`;
 
 const TableBody = styled.tbody`
   tr:not(:last-of-type) {
@@ -14,9 +19,11 @@ const TableBody = styled.tbody`
 
 const TableRow = styled.tr``;
 
-const TableRowLevelOne = styled.tr`
+const TableRowLevelOne = styled.tr<LevelRowType>`
   --timeFrameColor: ${({ theme }) => theme.color.lightAdditionalColorsBlue};
   --timeFrameBorder: ${({ theme }) => theme.color.lightAdditionalColorsBlueBorder};
+
+  ${displayRaw};
 
   td:first-child {
     position: relative;
@@ -38,9 +45,11 @@ const TableRowLevelOne = styled.tr`
   }
 `;
 
-const TableRowLevelTwo = styled.tr`
+const TableRowLevelTwo = styled.tr<LevelRowType>`
   --timeFrameColor: ${({ theme }) => theme.color.lightWarning};
   --timeFrameBorder: ${({ theme }) => theme.color.lightWarningBorder};
+
+  ${displayRaw};
 
   td:first-child {
     position: relative;
@@ -62,9 +71,11 @@ const TableRowLevelTwo = styled.tr`
   }
 `;
 
-const TableRowLevelThree = styled.tr`
+const TableRowLevelThree = styled.tr<LevelRowType>`
   --timeFrameColor: ${({ theme }) => theme.color.lightSuccess};
   --timeFrameBorder: ${({ theme }) => theme.color.lightSuccessBorder};
+
+  ${displayRaw};
 
   td:first-child {
     position: relative;
@@ -86,9 +97,11 @@ const TableRowLevelThree = styled.tr`
   }
 `;
 
-const TableRowLevelFour = styled.tr`
+const TableRowLevelFour = styled.tr<LevelRowType>`
   --timeFrameColor: ${({ theme }) => theme.color.lightSuccess};
   --timeFrameBorder: ${({ theme }) => theme.color.lightSuccessBorder};
+
+  ${displayRaw};
 
   td:first-child {
     position: relative;
@@ -110,9 +123,11 @@ const TableRowLevelFour = styled.tr`
   }
 `;
 
-const TableRowLevelFive = styled.tr`
+const TableRowLevelFive = styled.tr<LevelRowType>`
   --timeFrameColor: ${({ theme }) => theme.color.lightWarning};
   --timeFrameBorder: ${({ theme }) => theme.color.lightWarningBorder};
+
+  ${displayRaw};
 
   td:first-child {
     position: relative;

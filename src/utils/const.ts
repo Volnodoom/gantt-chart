@@ -7,7 +7,8 @@ export const SIX_DAY_IN_MILLISECONDS = 518_400_000;
 export const ONE_DAY_IN_MILLISECONDS = 86_400_000;
 export const ONE_DAY = 1;
 export const STEP = 7;
-
+export const REGULAR_PATTERN = /\blevel\w*/gm;
+export const LEVEL_WORD = 'level';
 
 export const DATE_OPTIONS = {
   day: '2-digit',
