@@ -1,34 +1,43 @@
 import { ClientProjectCalendarType, ServerProjectCalendarType } from "types/server.type";
-import { DATE_OPTIONS, LOCAL, ONE_DAY, ONE_DAY_IN_MILLISECONDS, SIX_DAY_IN_MILLISECONDS, STEP, WEEK_IN_MILLISECONDS } from "./const";
+import { CalendarLevels, DATE_OPTIONS, LOCAL, ONE_DAY, ONE_DAY_IN_MILLISECONDS, SIX_DAY_IN_MILLISECONDS, START, STEP, WEEK_IN_MILLISECONDS } from "./const";
 
 const getTopAndSubData = (serverData: ServerProjectCalendarType[], result: ClientProjectCalendarType[] = []) => {
-  serverData.forEach(({ sub, ...rest }) => {
-    if(sub) {
-      let subId: number[] = [];
-      sub.forEach((line) => subId.push(line.id));
+  let currentLevel = START;
 
-      result.push({
-        id: rest.id,
-        title: rest.title,
-        periodStart: rest['period_start'],
-        periodEnd: rest['period_end'],
-        subId,
-      });
+  const calculateData = (serverData: ServerProjectCalendarType[], result: ClientProjectCalendarType[] = []) => {
+    serverData.forEach(({ sub, ...rest }) => {
+      ++currentLevel;
 
-      getTopAndSubData(sub, result);
+      if(sub) {
+        let subId: number[] = [];
+        sub.forEach((line) => subId.push(line.id));
 
-    } else {
-      result.push({
-        id: rest.id,
-        title: rest.title,
-        periodStart: rest['period_start'],
-        periodEnd: rest['period_end'],
-        subId: [],
-      });
-    }
-  })
+        result.push({
+          id: rest.id,
+          title: rest.title,
+          periodStart: rest['period_start'],
+          periodEnd: rest['period_end'],
+          [`level${currentLevel}`]: subId,
+        });
 
-  return result
+        calculateData(sub, result);
+
+      } else {
+
+        result.push({
+          id: rest.id,
+          title: rest.title,
+          periodStart: rest['period_start'],
+          periodEnd: rest['period_end'],
+          [`level${currentLevel}`]: [],
+        });
+      }
+    })
+
+    return result
+  }
+
+  return calculateData(serverData, result);
 }
 
 export const adaptServerData = (serverData: ServerProjectCalendarType[]) => getTopAndSubData(serverData);
@@ -59,3 +68,27 @@ export const calculateEventLength = (start :string, end: string) => {
 
   return Math.round(difference/ONE_DAY_IN_MILLISECONDS) + ONE_DAY;
 }
+
+export const findCurrentEventSubLevelIds = (calendarEvent: ClientProjectCalendarType) => {
+  if(!calendarEvent) {
+    return null;
+  }
+
+  const values = Object.values(calendarEvent);
+  const arrays = values.filter((line) => Array.isArray(line));
+  const result = arrays.filter((data) => (data as number[]).length > 0).flat();
+
+  return result
+};
+
+export const makeSpecificFiltration = (calendarEvents: ClientProjectCalendarType[], filtrationLevel: CalendarLevels) => {
+  const filtratedData = calendarEvents.find((oneEvent) => oneEvent[filtrationLevel]);
+  if(!filtratedData) {
+    return null;
+  }
+
+  const ids = (filtratedData[filtrationLevel]) as number[];
+  const result = ids.map((id) => calendarEvents.filter((calendar) => calendar.id === id)).flat();
+
+  return result;
+};

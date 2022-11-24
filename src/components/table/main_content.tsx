@@ -1,180 +1,81 @@
-import { useAppDispatch } from "hook/use_app_dispatch";
 import { useSelector } from 'react-redux';
-import { useEffect } from "react";
-import { FIRST_EVENT_ID, ONE_DAY, ONE_DAY_IN_MILLISECONDS, STEP } from "utils/const";
+import { FIRST_EVENT_ID } from "utils/const";
 import * as S from "./main_content.style"
 import * as selector from "store/calendar_data.selector";
-import { arrayFromStep, makeOneDayStepNumber } from "utils/utils";
-import { ClientProjectCalendarType } from "types/server.type";
-import { useRef } from "react";
 import RowLevel from "./row_level";
+import EmptyRow from "./empty_row";
 
 type MainContentProps = {
   calendarStart: Date;
 }
 
 const MainContent = ({calendarStart}: MainContentProps) => {
-  const dispatch = useAppDispatch();
-  const repeat = useRef<boolean[]>([]);
-
-  const calendarEventById = useSelector(selector.getCalendarEventById);
   const allCalendarEvents =  useSelector(selector.getAllCalendarEvents);
 
-  const firstEvent = allCalendarEvents.find((object) => object.id === FIRST_EVENT_ID);
+  const levelTwoEvents = useSelector(selector.getCalendarsLevel2);
+  const levelThreeEvents = useSelector(selector.getCalendarsLevel3);
+  const levelFourEvents = useSelector(selector.getCalendarsLevel4);
+  const levelFiveEvents = useSelector(selector.getCalendarsLevel5);
 
-
-  const hasLevel = (calendarEvent: ClientProjectCalendarType | undefined) => calendarEvent && calendarEvent.subId.length > 0;
-  const findEvents = (calendarEvent: ClientProjectCalendarType[] | undefined, allEvents: ClientProjectCalendarType[]) =>
-    allEvents.filter((object) =>
-      calendarEvent?.subId.forEach(
-        (idValue) => idValue ===  object.id)
-    );
-
-
-
-  const hasLevelTwo = hasLevel(firstEvent);
-  const levelTwoEvents = findEvents(firstEvent, allCalendarEvents);
-
-  const hasLevelThree = hasLevel(levelTwoEvents);
-  const levelThreeEvents = findEvents(levelTwoEvents, allCalendarEvents);
-
-  const hasLevelFour = hasLevel(levelThreeEvents);
-  const levelFourEvents = findEvents(levelThreeEvents, allCalendarEvents);
-
-  const hasLevelFive = hasLevel(levelFourEvents);
-  const levelFiveEvents = findEvents(levelFourEvents, allCalendarEvents);
-
+  console.log({levelTwoEvents, levelThreeEvents, levelFourEvents, levelFiveEvents})
+  const firstEvent = allCalendarEvents.filter((object) => object.id === FIRST_EVENT_ID);
 
   return(
     <S.TableBody>
-      <S.TableRow>
-        {
-          arrayFromStep.map((valueOne) =>
-            arrayFromStep.map((valueTwo) => (
-              <S.TableData key={`${valueOne}-${valueTwo}-${valueOne+valueTwo}`}></S.TableData>
-            ))
-          )
-        }
-      </S.TableRow>
+      <EmptyRow />
       {
-        firstEvent
+        firstEvent.length > 0
         ?
-          <S.TableRowLevelOne>
-            <RowLevel calendarEvent={firstEvent} calendarStart={calendarStart} />
-          </S.TableRowLevelOne>
+        <S.TableRowLevelOne>
+          <RowLevel calendarEvent={firstEvent[0]} calendarStart={calendarStart}  key={'qwevc'}/>
+        </S.TableRowLevelOne>
         :
-          ''
+        ''
       }
 
       {
-        hasLevelTwo && levelTwoEvents
+        levelTwoEvents
         ?
         <S.TableRowLevelTwo>
-          <RowLevel calendarEvent={levelTwoEvents} calendarStart={calendarStart} />
+          <RowLevel calendarEvent={levelTwoEvents[0]} calendarStart={calendarStart}  key={'qwety'}/>
         </S.TableRowLevelTwo>
         :
-          ''
+        ''
       }
 
       {
-        hasLevelThree && levelThreeEvents
+        levelThreeEvents
         ?
         <S.TableRowLevelThree>
-          <RowLevel calendarEvent={levelThreeEvents} calendarStart={calendarStart} />
+          <RowLevel calendarEvent={levelThreeEvents[0]} calendarStart={calendarStart}  key={'qwet'}/>
         </S.TableRowLevelThree>
         :
-          ''
+        ''
       }
 
       {
-        hasLevelFour && levelFourEvents
+        levelFourEvents
         ?
         <S.TableRowLevelFour>
-          <RowLevel calendarEvent={levelFourEvents} calendarStart={calendarStart} />
+          <RowLevel calendarEvent={levelFourEvents[0]} calendarStart={calendarStart} key={'qwe'}/>
         </S.TableRowLevelFour>
         :
-          ''
+        ''
       }
 
+      {
+        levelFiveEvents
+        ?
+        levelFiveEvents.map((calendarObject) => (
+          <S.TableRowLevelFive key={calendarObject.title}>
+            <RowLevel calendarEvent={calendarObject} calendarStart={calendarStart} key={calendarObject.title} />
+          </S.TableRowLevelFive>
+        ))
+        :
+        ''
+      }
 
-      <S.TableRowLevelFive>
-        <S.TableData>
-          <S.TableDataTaskCounter>0</S.TableDataTaskCounter>
-          Banners for social networks
-          </S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-      </S.TableRowLevelFive>
-      <S.TableRowLevelFive>
-        <S.TableData>
-          <S.TableDataTaskCounter>0</S.TableDataTaskCounter>
-          Banners for social networks
-          </S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-      </S.TableRowLevelFive>
-      <S.TableLastRow>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-        <S.TableData></S.TableData>
-      </S.TableLastRow>
+    <EmptyRow isLastRow/>
     </S.TableBody>
   )
 }

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { ClientProjectCalendarType } from "types/server.type";
 import { STEP } from "utils/const";
-import { arrayFromStep, calculateEventLength, makeOneDayStepNumber } from "utils/utils";
+import { arrayFromStep, calculateEventLength, findCurrentEventSubLevelIds, makeOneDayStepNumber } from "utils/utils";
 import * as S from "./row_level.style";
 
 type RowLevelType = {
@@ -12,11 +12,14 @@ type RowLevelType = {
 const RowLevel = ({calendarEvent, calendarStart}: RowLevelType) => {
   const repeat = useRef<boolean[]>([]);
 
+  const subIds = findCurrentEventSubLevelIds(calendarEvent);
+  const taskCounter = subIds && (subIds as number[]).length > 0 ? subIds.length : 0;
+
   return(
     <>
       <S.TableData>
         <S.TableDataButton fold />
-        <S.TableDataTaskCounter>{calendarEvent.subId.length}</S.TableDataTaskCounter>
+        <S.TableDataTaskCounter>{taskCounter}</S.TableDataTaskCounter>
         {calendarEvent.title}
       </S.TableData>
 

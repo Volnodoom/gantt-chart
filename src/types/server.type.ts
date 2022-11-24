@@ -30,7 +30,12 @@ export type ClientProjectCalendarType = {
   title: string,
   periodStart: string,
   periodEnd: string,
-  subId: number[]
+  level1?: number [],
+  level2?: number [],
+  level3?: number [],
+  level4?: number [],
+  level5?: number [],
+  level6?: number [],
 };
 
 export type CalendarDataType = {
