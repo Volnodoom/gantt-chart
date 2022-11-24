@@ -188,8 +188,28 @@ const CalendarButton = styled.button`
   }
 `;
 
+const CalendarTableWrapper = styled.div`
+  margin: 0 24px 24px;
+
+  overflow: hidden;
+  width: 1392px;
+  height: auto;
+
+  &::after {
+    position: absolute;
+    top: 68px;
+    right: 0;
+    ${setDimensions(20, 708)};
+
+    content: '';
+    background-color: ${({ theme }) => theme.color.white};
+    box-shadow: -4px 2px 8px rgba(16, 31, 43, 0.1);
+  }
+`;
+
 export {
   GlobalStyle,
   Calendar,
   CalendarButton,
+  CalendarTableWrapper,
 };

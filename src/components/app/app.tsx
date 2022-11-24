@@ -6,12 +6,14 @@ import * as S from "./app.style";
 const App = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
-    <S.GlobalStyle />
+      <S.GlobalStyle />
 
-    <S.Calendar>
-      <S.CalendarButton type="button">Export</S.CalendarButton>
-      <Table />
-    </S.Calendar>
+      <S.Calendar>
+        <S.CalendarButton type="button">Export</S.CalendarButton>
+        <S.CalendarTableWrapper>
+          <Table />
+        </S.CalendarTableWrapper>
+      </S.Calendar>
     </ThemeProvider>
 
   )

@@ -52,4 +52,6 @@ export const setFontValues = (size: number | string, height: number | string, we
   }
 };
 
-
+export const specificBorder = css`
+  ${({ theme }) => `1px solid ${theme.color.lightOutlineTwo}`};
+`;
